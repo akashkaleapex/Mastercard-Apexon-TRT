@@ -1,85 +1,40 @@
-# Mastercard Apexon TRT
+# Mastercard SafetyNet TRT Copilot
 
-React + TypeScript PoC UI for reviewing transaction-risk events, event analysis, analyst decisions, and event history.
+Responsive React + TypeScript workspace for transaction review ticket investigations. The application includes a command center, searchable TRT queue, investigation workspace, transaction intelligence, historical case context, recommendations, a UDT assistant, and an always-available Copilot panel.
 
-## Requirements
-
-- Node.js 20.19+ or 22.12+
-- npm, included with Node.js
-
-## Install and Run
-
-From the repository root:
-
-```sh
-npm install
-npm run dev
-```
-
-Vite prints the local URL when the server starts, normally `http://localhost:5173/`.
-
-In Windows PowerShell, the normal commands above may be blocked if the `npm.ps1` shim is restricted by execution policy. In that case, run the equivalent Windows command shim:
+## Run
 
 ```powershell
 npm.cmd install
 npm.cmd run dev
 ```
 
-## Commands
+The dev server normally starts at `http://localhost:5173/`.
+
+## Checks
 
 | Command | Purpose |
 | --- | --- |
-| `npm run dev` | Start the Vite development server |
-| `npm run build` | Type-check and create the production build in `dist/` |
-| `npm run preview` | Preview the production build locally |
-| `npm run typecheck` | Run TypeScript project checks |
-| `npm run lint` | Run ESLint |
-| `npm test` | Run the Vitest and Testing Library suite |
+| `npm.cmd run build` | Type-check and create the production bundle |
+| `npm.cmd run typecheck` | Run TypeScript project checks |
+| `npm.cmd run lint` | Run ESLint |
+| `npm.cmd test` | Run Vitest and Testing Library |
 
 ## Routes
 
 | Route | Screen |
 | --- | --- |
-| `/` | Redirects to Dashboard |
-| `/dashboard` | Agent Monitor |
-| `/events` | Event Inbox with search, filters, and sorting |
-| `/events/:eventId` | Event Analysis |
-| `/events/:eventId/copilot` | Event-scoped AI Co-Pilot |
-| `/events/:eventId/actions` | Local Action Review |
-| `/memory` | Read-only Organizational Memory |
-| `/actions` | Planned Action Queue placeholder |
-| `/intake` | Conditional Event Intake placeholder |
-| `/settings` | Unspecified Settings placeholder |
+| `/dashboard` | TRT Command Center |
+| `/queue` | Searchable, filterable TRT queue |
+| `/investigation/:trtId` | Investigation workspace and analyst review |
+| `/intelligence/:trtId` | Transaction intelligence and masked sample data |
+| `/history` | Similar historical incidents and external context |
+| `/recommendations/:trtId` | Analyst recommendation and decision |
+| `/udt/:trtId` | UDT request assistant |
 
-## Project Structure
+## Sandbox Boundaries
 
-```text
-src/
-  app/                 # Router and shared application shell
-  components/ui/        # shadcn-compatible UI primitives
-  features/             # Dashboard, events, actions, Co-Pilot, memory
-  lib/                  # Shared UI utilities
-  mocks/                # Feature-separated static fixture records
-  test/                 # Vitest setup
-  types/                # Shared event, analysis, action, and memory types
-```
-
-The UI uses React Router, Tailwind CSS v4, Radix UI/shadcn-compatible components, Lucide React, and Recharts. The theme is white with orange primary and active states.
-
-## Data and Integration Boundaries
-
-- The bundled records in `src/mocks/` are static synthetic fixtures, even though the UI does not label them as synthetic. They are not live Mastercard data; do not add PII, account/cardholder information, credentials, or real event identifiers.
-- The Co-Pilot uses deterministic event-keyed responses. It is not connected to an LLM or external service.
-- Action drafts and decisions are page-local. Downloading an action packet creates a local JSON file; it does not send email or execute an operational rule.
-- Organizational Memory is static and read-only. Persistence, access control, retention, and knowledge-graph behavior have not been defined.
-- No SafetyNet signal, transaction store, email, cloud service, or production system is connected. Upload and production deployment are not implemented.
-
-## Tests and Demo
-
-The integration tests cover Memory filtering/evidence links, Action Review required fields and decision history, and Co-Pilot evidence-linked and unsupported responses:
-
-```powershell
-npm.cmd test
-```
-
-See [`docs/history-tracking/phase-6-demo-runbook.md`](docs/history-tracking/phase-6-demo-runbook.md) for a route-by-route walkthrough and presentation boundaries. Requirements, decisions, and implementation history are recorded in [`docs/history-tracking/requirements-traceability.md`](docs/history-tracking/requirements-traceability.md) and [`docs/history-tracking/ui-screen-implementation-plan.md`](docs/history-tracking/ui-screen-implementation-plan.md).
+- All incident and transaction records are synthetic. PAN-like values are masked and do not represent real cardholder data.
+- Copilot answers are deterministic local responses, not generated by a connected AI service.
+- Analyst decisions and UDT drafts stay in the browser session. No SafetyNet system or BEARS endpoint is connected.
+- The UDT PDF action opens a printable request view; use the browser's print dialog to save it as PDF.
