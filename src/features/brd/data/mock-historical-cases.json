@@ -1,0 +1,5 @@
+[
+  { "id": "TRT-2025-1234", "pattern": "BIN Attack", "similarity": 92, "outcome": "Threshold Increased", "merchant": "Ticketmaster", "action": "UDT submitted", "lesson": "A temporary threshold change was used after review of concentrated ticket-release traffic." },
+  { "id": "TRT-2024-8811", "pattern": "BIN Attack", "similarity": 87, "outcome": "Whitelisted", "merchant": "Ticketmaster", "action": "Merchant allow-listed", "lesson": "The merchant was allow-listed after analysts confirmed legitimate business activity." },
+  { "id": "TRT-2023-6731", "pattern": "BIN Attack", "similarity": 85, "outcome": "Escalated", "merchant": "Amazon", "action": "SafetyNet rule updated", "lesson": "The case was escalated when traffic patterns needed further rule-level investigation." }
+]

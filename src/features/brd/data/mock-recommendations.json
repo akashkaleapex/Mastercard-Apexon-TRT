@@ -1,0 +1,12 @@
+{
+  "action": "Continue SafetyNet Blocking",
+  "confidence": 94,
+  "supportingEvidence": ["Merchant Concentration", "Velocity Spike", "PAN Concentration", "Crypto Replay"],
+  "uncertainties": ["No customer validation received.", "No merchant promotion notification available."],
+  "currentThreshold": 1000,
+  "suggestedThreshold": 4000,
+  "thresholdUnit": "transactions/hour",
+  "reason": "Historical incident TRT-2025-1234 showed similar behavior.",
+  "similarity": 89,
+  "decisions": ["Approve Recommendation", "Modify Recommendation", "Request Customer Validation", "Escalate", "Generate UDT Draft", "Close TRT"]
+}

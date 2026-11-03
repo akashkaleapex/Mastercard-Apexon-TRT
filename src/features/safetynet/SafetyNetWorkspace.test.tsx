@@ -1,20 +1,36 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { MemoryRouter, Route, Routes, useLocation } from "react-router-dom";
 import { describe, expect, it } from "vitest";
+import { PortalLanding } from "@/features/pages/PortalLanding";
 import { SafetyNetWorkspace } from "@/features/safetynet/SafetyNetWorkspace";
+
+function CurrentPath() {
+  return <output data-testid="current-path">{useLocation().pathname}</output>;
+}
 
 function renderWorkspace(path: string) {
   return render(
     <MemoryRouter initialEntries={[path]}>
       <Routes>
-        <Route path="*" element={<SafetyNetWorkspace />} />
+        <Route path="*" element={<><SafetyNetWorkspace /><CurrentPath /></>} />
       </Routes>
     </MemoryRouter>,
   );
 }
 
 describe("SafetyNet workspace", () => {
+  it("offers Workshop Meetings and BRD Docs from the landing page", () => {
+    render(
+      <MemoryRouter initialEntries={["/"]}>
+        <PortalLanding />
+      </MemoryRouter>,
+    );
+
+    expect(screen.getByRole("link", { name: /Workshop Meetings/ })).toHaveAttribute("href", "/workshop");
+    expect(screen.getByRole("link", { name: /BRD Docs/ })).toHaveAttribute("href", "/brd/trt/TRT-2026-7821");
+  });
+
   it("shows command center metrics and persistent Copilot prompts", () => {
     renderWorkspace("/dashboard");
 
@@ -54,12 +70,27 @@ describe("SafetyNet workspace", () => {
     expect(screen.getByLabelText("Analyst notes Required")).toBeRequired();
   });
 
-  it("provides fifty masked transaction examples", () => {
+  it("searches, filters, and paginates masked transaction examples", async () => {
+    const user = userEvent.setup();
     renderWorkspace("/intelligence/TRT-2026-7821");
 
     expect(screen.getByRole("heading", { name: "Channel distribution" })).toBeInTheDocument();
-    const table = screen.getByRole("table", { name: "" });
-    expect(within(table).getAllByRole("row")).toHaveLength(51);
-    expect(within(table).getAllByText(/414720••••••/)).toHaveLength(50);
+    expect(screen.getAllByText("Amazon")[0]).toBeInTheDocument();
+    expect(screen.getByText("Geo Anomaly").parentElement).toHaveTextContent("Low");
+    expect(screen.getByText("Geo Anomaly").parentElement).toHaveTextContent("Not Found");
+    const table = screen.getByRole("table", { name: "Raw transaction data" });
+    expect(within(table).getAllByRole("row")).toHaveLength(11);
+    expect(within(table).getAllByText(/414720••••••/)).toHaveLength(10);
+
+    await user.click(screen.getByRole("button", { name: "Transaction page 2" }));
+    expect(screen.getByText("11–20").parentElement).toHaveTextContent("11–20 of 50");
+
+    await user.type(screen.getByLabelText("Search transactions"), "Ticketmaster");
+    expect(within(table).getAllByRole("row")).toHaveLength(8);
+    expect(within(table).getAllByText("Ticketmaster")).toHaveLength(7);
+
+    await user.clear(screen.getByLabelText("Search transactions"));
+    await user.selectOptions(screen.getByLabelText("Filter by Country"), "India");
+    expect(screen.getByText("1–9").parentElement).toHaveTextContent("Showing 1–9 of 9");
   });
 });

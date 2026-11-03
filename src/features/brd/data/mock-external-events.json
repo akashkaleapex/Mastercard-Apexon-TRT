@@ -1,0 +1,5 @@
+[
+  { "title": "Taylor Swift Ticket Release", "category": "Ticketing event", "relevance": "High", "detail": "A major ticket release may be contributing to unusual activity at ticketing merchants." },
+  { "title": "Nike Diwali Promotion", "category": "Regional promotion", "relevance": "Medium", "detail": "A regional retail campaign may explain part of the India transaction increase." },
+  { "title": "Spotify Subscription Campaign", "category": "Subscription campaign", "relevance": "Medium", "detail": "A subscription campaign may explain some recurring payment activity." }
+]

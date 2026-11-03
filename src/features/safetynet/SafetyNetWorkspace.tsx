@@ -32,7 +32,7 @@ import {
   Zap,
 } from "lucide-react";
 import { useState, type FormEvent } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link as RouterLink, useLocation, useNavigate, type LinkProps } from "react-router-dom";
 import {
   Area,
   AreaChart,
@@ -59,6 +59,18 @@ type Incident = {
   confidence: number;
 };
 
+type Transaction = {
+  pan: string;
+  merchant: string;
+  amount: number;
+  country: string;
+  acquirer: string;
+  issuer: string;
+  adc: string;
+  cryptogram: string;
+  timestamp: string;
+};
+
 const incidentSeed: Incident[] = [
   { id: "TRT-2026-7821", pattern: "BIN Attack", ica: "Citibank India", cid: "Citibank Global", country: "India", channel: "POS", created: "2026-10-29 11:15", status: "Review Required", priority: "Critical", confidence: 94 },
   { id: "TRT-2026-7822", pattern: "ASI Attack", ica: "Citibank US", cid: "Citibank Global", country: "USA", channel: "CNP", created: "2026-10-29 10:48", status: "Investigating", priority: "High", confidence: 88 },
@@ -82,7 +94,7 @@ const incidentSeed: Incident[] = [
   { id: "TRT-2026-7840", pattern: "Velocity Attack", ica: "HSBC UK", cid: "HSBC Global", country: "UK", channel: "ATM", created: "2026-10-29 03:31", status: "Open", priority: "Medium", confidence: 84 },
 ];
 
-const transactions = Array.from({ length: 50 }, (_, index) => {
+const transactions: Transaction[] = Array.from({ length: 50 }, (_, index) => {
   const merchants = ["Ticketmaster", "Spotify", "Netflix", "Nike", "Amazon", "Walmart", "Flipkart", "Target"];
   const countries = ["India", "USA", "UK", "Singapore", "Australia", "Canada"];
   const acquirers = ["Worldpay", "Adyen", "Fiserv", "Checkout.com", "Stripe"];
@@ -97,7 +109,7 @@ const transactions = Array.from({ length: 50 }, (_, index) => {
     issuer: issuers[index % issuers.length],
     adc: index % 4 === 0 ? "Mismatch" : "Valid",
     cryptogram: cryptograms[index % cryptograms.length],
-    time: `11:${String((index * 7) % 60).padStart(2, "0")}:${String((index * 13) % 60).padStart(2, "0")}`,
+    timestamp: `2026-10-29 11:${String((index * 7) % 60).padStart(2, "0")}:${String((index * 13) % 60).padStart(2, "0")} UTC`,
   };
 });
 
@@ -159,6 +171,15 @@ function escapeHtml(value: string) {
   })[character] ?? character);
 }
 
+function Link(props: LinkProps) {
+  const { pathname } = useLocation();
+  const underWorkshop = pathname === "/workshop" || pathname.startsWith("/workshop/");
+  const to = typeof props.to === "string" && underWorkshop && props.to.startsWith("/")
+    ? `/workshop${props.to}`
+    : props.to;
+  return <RouterLink {...props} to={to} />;
+}
+
 function PageHeading({ eyebrow, title, description, action }: { eyebrow: string; title: string; description?: string; action?: React.ReactNode }) {
   return (
     <div className="screen-heading">
@@ -196,14 +217,18 @@ export function SafetyNetWorkspace() {
   const location = useLocation();
   const navigate = useNavigate();
   const pathname = location.pathname;
-  const currentPath = pathname === "/" ? "/dashboard" : pathname;
-  const page = currentPath.startsWith("/queue") ? "queue"
+  const underWorkshop = pathname === "/workshop" || pathname.startsWith("/workshop/");
+  const routePath = underWorkshop ? pathname.slice("/workshop".length) || "/dashboard" : pathname;
+  const currentPath = routePath === "/" ? "/dashboard" : routePath;
+  const page = currentPath.startsWith("/brd/trt/") || currentPath.startsWith("/trt/") ? "investigation"
+    : currentPath.startsWith("/queue") ? "queue"
     : currentPath.startsWith("/investigation") ? "investigation"
       : currentPath.startsWith("/intelligence") ? "intelligence"
         : currentPath.startsWith("/history") ? "history"
           : currentPath.startsWith("/recommendations") ? "recommendations"
             : currentPath.startsWith("/udt") ? "udt" : "dashboard";
-  const selectedIncidentId = currentPath.match(/^\/investigation\/([^/]+)/)?.[1];
+  const selectedIncidentId = currentPath.match(/^\/investigation\/([^/]+)/)?.[1]
+    ?? currentPath.match(/^\/(?:brd\/trt|trt)\/([^/]+)/)?.[1];
   const [copilotOpen, setCopilotOpen] = useState(true);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [globalSearch, setGlobalSearch] = useState("");
@@ -215,6 +240,10 @@ export function SafetyNetWorkspace() {
   const [actionStatus, setActionStatus] = useState("");
   const [udtStatus, setUdtStatus] = useState("");
   const activeIncident = incidentSeed.find((incident) => incident.id === selectedIncidentId) ?? incidentSeed[0];
+
+  function navigateTo(path: string) {
+    navigate(underWorkshop ? `/workshop${path}` : path);
+  }
 
   function askCopilot(question: string) {
     const q = question.toLowerCase();
@@ -236,12 +265,12 @@ export function SafetyNetWorkspace() {
 
   function submitGlobalSearch(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    navigate(`/queue?q=${encodeURIComponent(globalSearch.trim())}`);
+    navigateTo(`/queue?q=${encodeURIComponent(globalSearch.trim())}`);
     setMobileNavOpen(false);
   }
 
   function openIncident(id: string) {
-    navigate(`/investigation/${id}`);
+    navigateTo(`/investigation/${id}`);
   }
 
   function submitRecommendation(event: FormEvent<HTMLFormElement>) {
@@ -260,8 +289,8 @@ export function SafetyNetWorkspace() {
         return <Link key={path} to={path} onClick={() => setMobileNavOpen(false)} className={`nav-link${active ? " nav-link-active" : ""}`}><Icon size={17} /><span>{label}</span>{label === "TRT Queue" && <b>27</b>}</Link>;
       })}
       <span className="nav-caption nav-caption-secondary">CURRENT TRT</span>
-      <button className={`nav-link nav-link-sub${page === "intelligence" ? " nav-link-active" : ""}`} onClick={() => navigate("/intelligence/TRT-2026-7821")}><Activity size={17} /><span>Transaction intelligence</span></button>
-      <button className={`nav-link nav-link-sub${page === "udt" ? " nav-link-active" : ""}`} onClick={() => navigate("/udt/TRT-2026-7821")}><FileCheck2 size={17} /><span>UDT assistant</span></button>
+      <button className={`nav-link nav-link-sub${page === "intelligence" ? " nav-link-active" : ""}`} onClick={() => navigateTo("/intelligence/TRT-2026-7821")}><Activity size={17} /><span>Transaction intelligence</span></button>
+      <button className={`nav-link nav-link-sub${page === "udt" ? " nav-link-active" : ""}`} onClick={() => navigateTo("/udt/TRT-2026-7821")}><FileCheck2 size={17} /><span>UDT assistant</span></button>
     </nav>
   );
 
@@ -295,12 +324,12 @@ export function SafetyNetWorkspace() {
 
         <div className="content-layout">
           <main className="main-content" id="main-content" tabIndex={-1}>
-            {page === "dashboard" && <DashboardScreen onSelect={openIncident} onQueue={() => navigate("/queue")} />}
+            {page === "dashboard" && <DashboardScreen onSelect={openIncident} onQueue={() => navigateTo("/queue")} />}
             {page === "queue" && <QueueScreen initialSearch={new URLSearchParams(location.search).get("q") ?? ""} onSelect={openIncident} />}
-            {page === "investigation" && <InvestigationScreen incident={activeIncident} onNavigate={navigate} onRecommendation={() => navigate("/recommendations/TRT-2026-7821")} />}
+            {page === "investigation" && <InvestigationScreen incident={activeIncident} onNavigate={navigateTo} onRecommendation={() => navigateTo("/recommendations/TRT-2026-7821")} />}
             {page === "intelligence" && <IntelligenceScreen />}
             {page === "history" && <HistoryScreen />}
-            {page === "recommendations" && <RecommendationsScreen selectedAction={selectedAction} setSelectedAction={setSelectedAction} decision={analystDecision} setDecision={setAnalystDecision} notes={analystNotes} setNotes={setAnalystNotes} status={actionStatus} onSubmit={submitRecommendation} onUdt={() => navigate("/udt/TRT-2026-7821")} />}
+            {page === "recommendations" && <RecommendationsScreen selectedAction={selectedAction} setSelectedAction={setSelectedAction} decision={analystDecision} setDecision={setAnalystDecision} notes={analystNotes} setNotes={setAnalystNotes} status={actionStatus} onSubmit={submitRecommendation} onUdt={() => navigateTo("/udt/TRT-2026-7821")} />}
             {page === "udt" && <UdtScreen status={udtStatus} setStatus={setUdtStatus} />}
           </main>
           <aside className={`copilot-panel${copilotOpen ? "" : " copilot-collapsed"}`} aria-label="AI Copilot panel">
@@ -374,10 +403,115 @@ function IntelligenceScreen() {
     <div className="transaction-kpis">{[{ label: "Total transactions", value: "145,231", className: "" }, { label: "SafetyNet declined", value: "118,721", className: "metric-red" }, { label: "Issuer declined", value: "15,948", className: "metric-muted" }, { label: "Approved", value: "10,562", className: "metric-green" }].map((item) => <article className="surface transaction-kpi" key={item.label}><span>{item.label}</span><strong className={item.className}>{item.value}</strong><small><span className="metric-dot" />Current incident window</small></article>)}</div>
     <div className="chart-grid"><section className="surface chart-surface volume-surface"><div className="surface-heading"><div><h2>Transaction volume timeline</h2><p>Transactions per 30-minute interval · UTC</p></div><span className="chart-chip"><i />Observed volume</span></div><div className="volume-chart"><ResponsiveContainer width="100%" height="100%"><AreaChart data={volumeData} margin={{ top: 8, right: 12, left: -18, bottom: 0 }}><defs><linearGradient id="volumeFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#d84a24" stopOpacity={0.28} /><stop offset="96%" stopColor="#d84a24" stopOpacity={0.015} /></linearGradient></defs><CartesianGrid stroke="#e9e9e4" strokeDasharray="3 4" vertical={false} /><XAxis dataKey="time" tickLine={false} axisLine={false} tick={{ fill: "#868a82", fontSize: 10 }} /><YAxis tickLine={false} axisLine={false} tick={{ fill: "#868a82", fontSize: 10 }} tickFormatter={(value: number) => `${value / 1000}k`} /><Tooltip formatter={(value) => [Number(value).toLocaleString(), "Transactions"]} contentStyle={{ border: "1px solid #e6e4dd", borderRadius: 6, fontSize: 12 }} /><Area type="monotone" dataKey="transactions" stroke="#d84a24" strokeWidth={2.2} fill="url(#volumeFill)" activeDot={{ r: 4, fill: "#d84a24" }} /></AreaChart></ResponsiveContainer></div><div className="spike-callout"><span className="spike-line" /><span><b>+380% velocity spike</b> · baseline exceeded at 10:30 UTC</span></div></section>
       <section className="surface chart-surface distribution-surface"><div className="surface-heading"><div><h2>Country distribution</h2><p>Share of transactions</p></div><button className="icon-button" aria-label="More country chart options"><ChevronDown size={15} /></button></div><div className="country-chart-wrap"><div className="country-chart"><ResponsiveContainer width="100%" height="100%"><PieChart><Pie data={countryData} dataKey="value" nameKey="name" innerRadius={50} outerRadius={76} paddingAngle={3} stroke="none">{countryData.map((item) => <Cell key={item.name} fill={item.color} />)}</Pie><Tooltip formatter={(value) => [`${value}%`, "Share"]} /></PieChart></ResponsiveContainer><div className="donut-total"><strong>145k</strong><small>transactions</small></div></div><ul className="country-legend">{countryData.map((item) => <li key={item.name}><i style={{ background: item.color }} /><span>{item.name}</span><b>{item.value}%</b></li>)}</ul></div></section></div>
-    <div className="intel-lower-grid"><section className="surface merchant-surface"><div className="surface-heading"><div><h2>Top merchants</h2><p>Concentration across active transaction set</p></div><span className="merchant-total">4 leading</span></div><div className="merchant-table"><div><span className="merchant-rank">01</span><b>Ticketmaster</b><span className="merchant-track"><i style={{ width: "100%" }} /></span><strong>53,210</strong><span className="merchant-share">36.6%</span></div><div><span className="merchant-rank">02</span><b>Spotify</b><span className="merchant-track"><i style={{ width: "79%" }} /></span><strong>42,000</strong><span className="merchant-share">28.9%</span></div><div><span className="merchant-rank">03</span><b>Netflix</b><span className="merchant-track"><i style={{ width: "40%" }} /></span><strong>21,120</strong><span className="merchant-share">14.5%</span></div><div><span className="merchant-rank">04</span><b>Nike</b><span className="merchant-track"><i style={{ width: "25%" }} /></span><strong>13,421</strong><span className="merchant-share">9.2%</span></div></div></section><section className="surface signal-surface"><div className="surface-heading"><div><h2>Fraud signals</h2><p>Pattern checks across transaction set</p></div><span className="signal-count">5 signals</span></div><div className="signal-list">{["Crypto replay", "Same amount pattern", "PAN concentration", "Merchant concentration", "Velocity burst"].map((signal) => <div key={signal}><span className="signal-check"><Check size={12} /></span><span>{signal}</span><strong>Found</strong></div>)}</div></section></div>
+    <div className="intel-lower-grid"><section className="surface merchant-surface"><div className="surface-heading"><div><h2>Top merchants</h2><p>Concentration across active transaction set</p></div><span className="merchant-total">5 leading</span></div><div className="merchant-table"><div><span className="merchant-rank">01</span><b>Ticketmaster</b><span className="merchant-track"><i style={{ width: "100%" }} /></span><strong>53,210</strong><span className="merchant-share">36.6%</span></div><div><span className="merchant-rank">02</span><b>Spotify</b><span className="merchant-track"><i style={{ width: "79%" }} /></span><strong>42,000</strong><span className="merchant-share">28.9%</span></div><div><span className="merchant-rank">03</span><b>Netflix</b><span className="merchant-track"><i style={{ width: "40%" }} /></span><strong>21,120</strong><span className="merchant-share">14.5%</span></div><div><span className="merchant-rank">04</span><b>Nike</b><span className="merchant-track"><i style={{ width: "25%" }} /></span><strong>13,421</strong><span className="merchant-share">9.2%</span></div><div><span className="merchant-rank">05</span><b>Amazon</b><span className="merchant-track"><i style={{ width: "15%" }} /></span><strong>7,834</strong><span className="merchant-share">5.4%</span></div></div></section><section className="surface signal-surface"><div className="surface-heading"><div><h2>Fraud signals</h2><p>Pattern checks across transaction set</p></div><span className="signal-count">5 signals</span></div><div className="signal-list"><div className="signal-header"><span /><span>Signal</span><span>Severity</span><span>Status</span></div>{[{ signal: "Crypto Replay", severity: "Critical", status: "Found" }, { signal: "Merchant Concentration", severity: "High", status: "Found" }, { signal: "PAN Concentration", severity: "High", status: "Found" }, { signal: "Velocity Burst", severity: "Critical", status: "Found" }, { signal: "Geo Anomaly", severity: "Low", status: "Not Found" }].map(({ signal, severity, status }) => <div key={signal}><span className={`signal-check${status === "Found" ? "" : " signal-not-found"}`}>{status === "Found" ? <Check size={12} /> : <X size={12} />}</span><span>{signal}</span><b className="signal-severity">{severity}</b><strong className={status === "Found" ? "" : "signal-not-found-text"}>{status}</strong></div>)}</div></section></div>
     <section className="surface channel-distribution"><div className="surface-heading"><div><h2>Channel distribution</h2><p>Transaction mix by acceptance channel</p></div></div><div className="channel-bars">{channelData.map((channel) => <div key={channel.name}><div className="channel-bar-label"><span>{channel.name}</span><strong>{channel.share}%</strong></div><span className="channel-bar-track"><i style={{ width: `${channel.share * 2.5}%` }} /></span><small>{channel.count} transactions</small></div>)}</div></section>
-    <section className="surface raw-data-surface"><div className="surface-heading"><div><h2>Raw transaction data</h2><p>Masked synthetic sample · 50 records shown</p></div><span className="synthetic-label"><Shield size={12} /> Synthetic data</span></div><div className="table-scroll"><table className="data-table transaction-table"><thead><tr><th>PAN</th><th>Merchant</th><th>Amount</th><th>Country</th><th>Acquirer</th><th>Issuer</th><th>ADC indicator</th><th>Cryptogram</th><th>Time (UTC)</th></tr></thead><tbody>{transactions.map((row, index) => <tr key={`${row.pan}-${index}`}><td className="pan-cell">{row.pan}</td><td>{row.merchant}</td><td>${row.amount.toFixed(2)}</td><td>{row.country}</td><td>{row.acquirer}</td><td>{row.issuer}</td><td><span className={row.adc === "Mismatch" ? "adc-mismatch" : "adc-valid"}>{row.adc}</span></td><td className="crypto-cell">{row.cryptogram}</td><td>{row.time}</td></tr>)}</tbody></table></div></section>
+    <EvidenceTable />
   </section>;
+}
+
+type TransactionFilter = "merchant" | "country" | "issuer" | "acquirer" | "adc";
+
+const transactionFilterColumns: { key: TransactionFilter; label: string }[] = [
+  { key: "merchant", label: "Merchant" },
+  { key: "country", label: "Country" },
+  { key: "issuer", label: "Issuer" },
+  { key: "acquirer", label: "Acquirer" },
+  { key: "adc", label: "ADC indicator" },
+];
+
+const transactionSortColumns: { key: keyof Transaction; label: string }[] = [
+  { key: "timestamp", label: "Timestamp" },
+  { key: "merchant", label: "Merchant" },
+  { key: "amount", label: "Amount" },
+  { key: "pan", label: "PAN" },
+  { key: "country", label: "Country" },
+  { key: "issuer", label: "Issuer" },
+  { key: "acquirer", label: "Acquirer" },
+  { key: "adc", label: "ADC indicator" },
+  { key: "cryptogram", label: "Cryptogram" },
+];
+
+function EvidenceTable() {
+  const [search, setSearch] = useState("");
+  const [filters, setFilters] = useState<Record<TransactionFilter, string>>({
+    merchant: "",
+    country: "",
+    issuer: "",
+    acquirer: "",
+    adc: "",
+  });
+  const [sortField, setSortField] = useState<keyof Transaction>("timestamp");
+  const [sortDirection, setSortDirection] = useState<"ascending" | "descending">("descending");
+  const [page, setPage] = useState(1);
+  const pageSize = 10;
+  const normalizedSearch = search.trim().toLowerCase();
+  const filteredTransactions = transactions.filter((row) =>
+    Object.values(row).some((value) => String(value).toLowerCase().includes(normalizedSearch)) &&
+    transactionFilterColumns.every(({ key }) => !filters[key] || row[key] === filters[key]),
+  );
+  const sortedTransactions = [...filteredTransactions].sort((first, second) => {
+    const firstValue = first[sortField];
+    const secondValue = second[sortField];
+    const comparison = typeof firstValue === "number" && typeof secondValue === "number"
+      ? firstValue - secondValue
+      : String(firstValue).localeCompare(String(secondValue));
+    return sortDirection === "ascending" ? comparison : -comparison;
+  });
+  const pageCount = Math.max(1, Math.ceil(sortedTransactions.length / pageSize));
+  const visibleTransactions = sortedTransactions.slice((page - 1) * pageSize, page * pageSize);
+
+  function updateFilter(key: TransactionFilter, value: string) {
+    setFilters((current) => ({ ...current, [key]: value }));
+    setPage(1);
+  }
+
+  return (
+    <section className="surface raw-data-surface">
+      <div className="surface-heading">
+        <div><h2>Raw transaction data</h2><p>Masked synthetic sample · {filteredTransactions.length.toLocaleString()} records</p></div>
+        <span className="synthetic-label"><Shield size={12} /> Synthetic data</span>
+      </div>
+      <div className="queue-toolbar" aria-label="Transaction table controls">
+        <label className="search-field"><Search size={16} /><input value={search} onChange={(event) => { setSearch(event.target.value); setPage(1); }} placeholder="Search transactions..." aria-label="Search transactions" /></label>
+        {transactionFilterColumns.map(({ key, label }) => (
+          <label className="select-field" key={key}>
+            <span>{label}</span>
+            <select aria-label={`Filter by ${label}`} value={filters[key]} onChange={(event) => updateFilter(key, event.target.value)}>
+              <option value="">All</option>
+              {Array.from(new Set(transactions.map((row) => row[key]))).sort().map((value) => <option key={value}>{value}</option>)}
+            </select>
+          </label>
+        ))}
+        <label className="select-field sort-field">
+          <span>Sort by</span>
+          <select aria-label="Sort transactions" value={sortField} onChange={(event) => setSortField(event.target.value as keyof Transaction)}>
+            {transactionSortColumns.map(({ key, label }) => <option key={key} value={key}>{label}</option>)}
+          </select>
+        </label>
+        <button className="icon-button" aria-label={`Sort ${sortDirection === "ascending" ? "descending" : "ascending"}`} onClick={() => setSortDirection((direction) => direction === "ascending" ? "descending" : "ascending")}><ArrowDownUp size={15} /></button>
+      </div>
+      <div className="table-scroll">
+        <table className="data-table transaction-table" aria-label="Raw transaction data">
+          <thead><tr><th>Timestamp</th><th>Merchant</th><th>Amount</th><th>PAN</th><th>Country</th><th>Issuer</th><th>Acquirer</th><th>ADC indicator</th><th>Cryptogram</th></tr></thead>
+          <tbody>{visibleTransactions.map((row, index) => (
+            <tr key={`${row.pan}-${index}`}>
+              <td>{row.timestamp}</td><td>{row.merchant}</td><td>${row.amount.toFixed(2)}</td><td className="pan-cell">{row.pan}</td><td>{row.country}</td><td>{row.issuer}</td><td>{row.acquirer}</td>
+              <td><span className={row.adc === "Mismatch" ? "adc-mismatch" : "adc-valid"}>{row.adc}</span></td><td className="crypto-cell">{row.cryptogram}</td>
+            </tr>
+          ))}</tbody>
+        </table>
+        {visibleTransactions.length === 0 && <div className="empty-state">No transactions match these filters.</div>}
+      </div>
+      <div className="table-pagination">
+        <span>Showing <b>{sortedTransactions.length ? (page - 1) * pageSize + 1 : 0}–{Math.min(page * pageSize, sortedTransactions.length)}</b> of {sortedTransactions.length}</span>
+        <div>
+          <button aria-label="Previous transaction page" disabled={page === 1} onClick={() => setPage((current) => current - 1)}><ArrowLeft size={14} /></button>
+          {Array.from({ length: pageCount }, (_, index) => index + 1).map((pageNumber) => <button key={pageNumber} className={page === pageNumber ? "pagination-active" : ""} aria-label={`Transaction page ${pageNumber}`} onClick={() => setPage(pageNumber)}>{pageNumber}</button>)}
+          <button aria-label="Next transaction page" disabled={page === pageCount} onClick={() => setPage((current) => current + 1)}><ArrowRight size={14} /></button>
+        </div>
+      </div>
+    </section>
+  );
 }
 
 function HistoryScreen() {

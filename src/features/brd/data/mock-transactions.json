@@ -1,0 +1,12 @@
+[
+  { "timestamp": "2026-10-29T11:15:03Z", "merchant": "Ticketmaster", "amount": 89.99, "pan": "414720••••••1024", "country": "India", "issuer": "Citibank India", "acquirer": "Worldpay", "adc": "Mismatch", "cryptogram": "A91C-7F2D" },
+  { "timestamp": "2026-10-29T11:15:16Z", "merchant": "Ticketmaster", "amount": 145.00, "pan": "414720••••••1061", "country": "India", "issuer": "Citibank India", "acquirer": "Adyen", "adc": "Valid", "cryptogram": "B830-11CA" },
+  { "timestamp": "2026-10-29T11:16:02Z", "merchant": "Spotify", "amount": 249.50, "pan": "414720••••••1098", "country": "India", "issuer": "Citibank India", "acquirer": "Fiserv", "adc": "Valid", "cryptogram": "A91C-7F2D" },
+  { "timestamp": "2026-10-29T11:16:41Z", "merchant": "Netflix", "amount": 39.99, "pan": "414720••••••1135", "country": "USA", "issuer": "Citibank US", "acquirer": "Checkout.com", "adc": "Mismatch", "cryptogram": "C216-39B0" },
+  { "timestamp": "2026-10-29T11:17:08Z", "merchant": "Nike", "amount": 512.00, "pan": "414720••••••1172", "country": "Singapore", "issuer": "Citibank India", "acquirer": "Stripe", "adc": "Valid", "cryptogram": "A91C-7F2D" },
+  { "timestamp": "2026-10-29T11:17:53Z", "merchant": "Amazon", "amount": 120.00, "pan": "414720••••••1209", "country": "India", "issuer": "Citibank India", "acquirer": "Worldpay", "adc": "Valid", "cryptogram": "D431-80AB" },
+  { "timestamp": "2026-10-29T11:18:11Z", "merchant": "Ticketmaster", "amount": 89.99, "pan": "414720••••••1246", "country": "UK", "issuer": "HSBC UK", "acquirer": "Adyen", "adc": "Mismatch", "cryptogram": "A91C-7F2D" },
+  { "timestamp": "2026-10-29T11:18:49Z", "merchant": "Spotify", "amount": 145.00, "pan": "414720••••••1283", "country": "Australia", "issuer": "ANZ Australia", "acquirer": "Fiserv", "adc": "Valid", "cryptogram": "B830-11CA" },
+  { "timestamp": "2026-10-29T11:19:24Z", "merchant": "Ticketmaster", "amount": 249.50, "pan": "414720••••••1320", "country": "India", "issuer": "Citibank India", "acquirer": "Checkout.com", "adc": "Mismatch", "cryptogram": "A91C-7F2D" },
+  { "timestamp": "2026-10-29T11:19:57Z", "merchant": "Netflix", "amount": 39.99, "pan": "414720••••••1357", "country": "USA", "issuer": "Citibank US", "acquirer": "Stripe", "adc": "Valid", "cryptogram": "C216-39B0" }
+]

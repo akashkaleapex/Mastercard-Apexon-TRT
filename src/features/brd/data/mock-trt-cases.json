@@ -1,0 +1,41 @@
+[
+  {
+    "id": "TRT-2026-7821",
+    "pattern": "BIN Attack",
+    "ica": "Citibank India",
+    "cid": "Citibank Global",
+    "country": "India",
+    "channel": "POS",
+    "status": "Review Required",
+    "confidence": 94,
+    "priority": "Critical",
+    "createdAt": "2026-10-29T11:15:00Z",
+    "created": "29-Oct-2026 11:15 UTC"
+  },
+  {
+    "id": "TRT-2026-7822",
+    "pattern": "BIN Attack",
+    "ica": "HSBC UK",
+    "cid": "HSBC Global",
+    "country": "UK",
+    "channel": "CNP",
+    "status": "Open",
+    "confidence": 91,
+    "priority": "High",
+    "createdAt": "2026-10-29T10:48:00Z",
+    "created": "29-Oct-2026 10:48 UTC"
+  },
+  {
+    "id": "TRT-2026-7823",
+    "pattern": "ASI Attack",
+    "ica": "Citibank US",
+    "cid": "Citibank Global",
+    "country": "USA",
+    "channel": "CNP",
+    "status": "Investigating",
+    "confidence": 88,
+    "priority": "High",
+    "createdAt": "2026-10-29T10:21:00Z",
+    "created": "29-Oct-2026 10:21 UTC"
+  }
+]
