@@ -1,14 +1,8 @@
-import { ArrowUpRight, CalendarDays, FileText, Shield } from "lucide-react";
+import { ArrowUpRight, FileText, Shield } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const destinations = [
-  // {
-  //   title: "Workshop Meetings",
-  //   description: "Open the separate Workshop Meetings workspace.",
-  //   path: "/workshop",
-  //   icon: CalendarDays,
-  //   label: "WORKSHOP",
-  // },
+  
   {
     title: "BRD Docs",
     description: "Review the TRT investigation experience and supporting evidence.",

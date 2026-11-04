@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { ClipboardList, FileSearch, History, LayoutDashboard, Lightbulb, Menu, Shield, X } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { CopilotPanel } from "@/features/brd/components/CopilotPanel";
 import {
   EvidencePanel,
   HistoricalCasesPanel,
@@ -70,7 +69,7 @@ export function BRDWorkspace() {
             {activeTab === "Recommendation" && <RecommendationPanel />}
           </>}
         </main>
-        <CopilotPanel incidentId={incident.id} onOpenEvidence={openEvidence} onOpenInvestigation={openInvestigation} />
+
       </div>
     </div>
   );
