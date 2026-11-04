@@ -9,10 +9,10 @@ export const router = createBrowserRouter([
     path: "/",
     element: <PortalLanding />,
   },
-  {
-    path: "/workshop/*",
-    element: <WorkshopMeetings />,
-  },
+  // {
+  //   path: "/workshop/*",
+  //   element: <WorkshopMeetings />,
+  // },
   {
     path: "/brd/*",
     element: <BRDWorkspace />,
