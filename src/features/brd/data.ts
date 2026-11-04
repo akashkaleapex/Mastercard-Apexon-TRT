@@ -60,7 +60,6 @@ export const transactionRows: Transaction[] = Array.from({ length: 50 }, (_, ind
 
 export const dashboardMetrics = [
   { label: "Active TRTs", value: "27", tone: "red" },
-  { label: "Critical TRTs", value: "8", tone: "orange" },
   { label: "Awaiting Review", value: "5", tone: "gold" },
   { label: "Pending Validation", value: "4", tone: "blue" },
   { label: "UDT Pending", value: "3", tone: "green" },
