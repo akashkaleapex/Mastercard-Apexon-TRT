@@ -24,13 +24,12 @@ The dev server normally starts at `http://localhost:5173/`.
 
 | Route | Screen |
 | --- | --- |
-| `/dashboard` | TRT Command Center |
-| `/queue` | Searchable, filterable TRT queue |
-| `/investigation/:trtId` | Investigation workspace and analyst review |
-| `/intelligence/:trtId` | Transaction intelligence and masked sample data |
-| `/history` | Similar historical incidents and external context |
-| `/recommendations/:trtId` | Analyst recommendation and decision |
-| `/udt/:trtId` | UDT request assistant |
+| `/` | Redirects to `/dashboard` |
+| `/dashboard` | TRT dashboard |
+| `/queue` | Searchable, filterable TRT queue (`/queue?q=` pre-fills the search) |
+| `/trt/:trtId` | Investigation workspace: Overview, Evidence, Historical Context and Recommendation tabs |
+
+Any other path redirects to `/dashboard`.
 
 ## Sandbox Boundaries
 

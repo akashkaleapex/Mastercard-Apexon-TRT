@@ -1,5 +1,5 @@
 [
-  { "title": "Taylor Swift Ticket Release", "category": "Ticketing event", "relevance": "High", "detail": "A major ticket release may be contributing to unusual activity at ticketing merchants." },
-  { "title": "Nike Diwali Promotion", "category": "Regional promotion", "relevance": "Medium", "detail": "A regional retail campaign may explain part of the India transaction increase." },
-  { "title": "Spotify Subscription Campaign", "category": "Subscription campaign", "relevance": "Medium", "detail": "A subscription campaign may explain some recurring payment activity." }
+  { "title": "Major concert ticket release", "category": "Ticketing event", "result": "Partly fits", "detail": "May explain volume at StageGate Tickets, but not one cryptogram repeating across different PANs. Supplied manually, not verified." },
+  { "title": "Regional festival retail promotion", "category": "Regional promotion", "result": "Not supported", "detail": "A promotion would spread across many cardholders; here 51 PANs carry 67% of traffic. Supplied manually, not verified." },
+  { "title": "Subscription campaign", "category": "Subscription campaign", "result": "Not supported", "detail": "Traffic is mostly POS with no recurring flag. Supplied manually, not verified." }
 ]

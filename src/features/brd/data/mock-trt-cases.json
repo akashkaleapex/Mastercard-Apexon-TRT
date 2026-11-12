@@ -1,41 +1,18 @@
 [
-  {
-    "id": "TRT-2026-7821",
-    "pattern": "BIN Attack",
-    "ica": "Citibank India",
-    "cid": "Citibank Global",
-    "country": "India",
-    "channel": "POS",
-    "status": "Review Required",
-    "confidence": 94,
-    "priority": "Critical",
-    "createdAt": "2026-10-29T11:15:00Z",
-    "created": "29-Oct-2026 11:15 UTC"
-  },
-  {
-    "id": "TRT-2026-7822",
-    "pattern": "BIN Attack",
-    "ica": "HSBC UK",
-    "cid": "HSBC Global",
-    "country": "UK",
-    "channel": "CNP",
-    "status": "Open",
-    "confidence": 91,
-    "priority": "High",
-    "createdAt": "2026-10-29T10:48:00Z",
-    "created": "29-Oct-2026 10:48 UTC"
-  },
-  {
-    "id": "TRT-2026-7823",
-    "pattern": "ASI Attack",
-    "ica": "Citibank US",
-    "cid": "Citibank Global",
-    "country": "USA",
-    "channel": "CNP",
-    "status": "Investigating",
-    "confidence": 88,
-    "priority": "High",
-    "createdAt": "2026-10-29T10:21:00Z",
-    "created": "29-Oct-2026 10:21 UTC"
-  }
+  { "id": "TRT-2026-7821", "pattern": "BIN Attack", "issuer": "Indus Commercial Bank India", "ica": "3305", "cid": "Indus Financial Group", "bin": "414720", "country": "India", "channel": "POS", "status": "Review Required", "severity": "High", "source": "xMatters", "signal": "Volume ×4.8", "inputCheck": "2 warnings", "assistantView": "Pattern consistent with BIN attack", "createdAt": "2026-10-29T11:15:00Z" },
+  { "id": "TRT-2026-7822", "pattern": "BIN Attack", "issuer": "Northbridge Bank UK", "ica": "1043", "cid": "Northbridge Financial Group", "bin": "542318", "country": "UK", "channel": "CNP", "status": "Open", "severity": "High", "source": "xMatters", "signal": "Declines ×3.0", "inputCheck": "OK", "assistantView": "Card-testing pattern (zero-amount verifications)", "createdAt": "2026-10-29T10:48:00Z" },
+  { "id": "TRT-2026-7823", "pattern": "ASI Attack", "issuer": "Northbridge Bank USA", "ica": "1041", "cid": "Northbridge Financial Group", "bin": "549290", "country": "USA", "channel": "CNP", "status": "Investigating", "severity": "High", "source": "xMatters", "signal": "Declines ×4.6", "inputCheck": "2 warnings", "assistantView": "Account-status inquiry burst", "createdAt": "2026-10-29T10:21:00Z" },
+  { "id": "TRT-2026-7824", "pattern": "Merchant Attack", "issuer": "Meridian Bank Deutschland", "ica": "2210", "cid": "Meridian Group", "bin": "516744", "country": "Germany", "channel": "CNP", "status": "Decision Recorded", "severity": "High", "source": "xMatters", "signal": "Declines ×43.1", "inputCheck": "OK", "assistantView": "Ticket on-sale likely (benign)", "createdAt": "2026-10-28T08:15:00Z" },
+  { "id": "TRT-2026-7825", "pattern": "BIN Attack", "issuer": "Southern Cross Brasil", "ica": "5150", "cid": "Southern Cross Group", "bin": "525776", "country": "Brazil", "channel": "CNP", "status": "Open", "severity": "Medium", "source": "xMatters", "signal": "Declines ×2.4", "inputCheck": "OK", "assistantView": "Inconclusive · extend window", "createdAt": "2026-10-29T02:51:00Z" },
+  { "id": "TRT-2026-7826", "pattern": "BIN Attack", "issuer": "Indus Commercial Bank India", "ica": "3305", "cid": "Indus Financial Group", "bin": "414720", "country": "India", "channel": "POS", "status": "Open", "severity": "High", "source": "xMatters", "signal": "Volume ×2.1", "inputCheck": "2 warnings", "assistantView": "Possible repeat of 7821", "repeatOf": "TRT-2026-7821", "createdAt": "2026-10-29T13:40:00Z" },
+  { "id": "TRT-2026-7827", "pattern": "Velocity Attack", "issuer": "Meridian Banque France", "ica": "2211", "cid": "Meridian Group", "bin": "513377", "country": "France", "channel": "CNP", "status": "Investigating", "severity": "High", "source": "OCC ticket", "signal": "Declines ×6.2", "inputCheck": "1 warning", "assistantView": "Declines are issuer-sourced, not SafetyNet", "createdAt": "2026-10-29T10:50:00Z" },
+  { "id": "TRT-2026-7828", "pattern": "Others", "issuer": "Indus Commercial Bank Gulf", "ica": "3306", "cid": "Indus Financial Group", "bin": "557203", "country": "UAE", "channel": "ATM", "status": "Open", "severity": "High", "source": "xMatters", "signal": "Declines ×10.4", "inputCheck": "Unsupported type", "assistantView": "ATM cash-out signals · outside PoC scope, manual review", "createdAt": "2026-10-29T05:33:00Z" },
+  { "id": "TRT-2026-7829", "pattern": "BIN Attack", "issuer": "Northbridge Bank Canada", "ica": "1042", "cid": "Northbridge Financial Group", "bin": "547112", "country": "Canada", "channel": "CNP", "status": "Investigating", "severity": "High", "source": "xMatters", "signal": "Declines ×32.4", "inputCheck": "2 warnings", "assistantView": "BIN-attack pattern (expiry / CVC guessing)", "createdAt": "2026-10-29T09:42:00Z" },
+  { "id": "TRT-2026-7830", "pattern": "BIN Attack", "issuer": "Pacifica Cards Singapore", "ica": "4120", "cid": "Pacifica Group", "bin": "521845", "country": "Singapore", "channel": "CNP", "status": "Open", "severity": "High", "source": "xMatters", "signal": "Declines ×3.3", "inputCheck": "OK", "assistantView": "Card-testing pattern (zero-amount verifications)", "createdAt": "2026-10-29T08:27:00Z" },
+  { "id": "TRT-2026-7831", "pattern": "BIN Attack", "issuer": "Northbridge Bank UK", "ica": "1043", "cid": "Northbridge Financial Group", "bin": "542377", "country": "UK", "channel": "CNP", "status": "Decision Recorded", "severity": "High", "source": "xMatters", "signal": "Declines ×56.5", "inputCheck": "OK", "assistantView": "BIN-attack pattern (many merchants)", "createdAt": "2026-10-28T19:38:00Z" },
+  { "id": "TRT-2026-7832", "pattern": "BIN Attack", "issuer": "Indus Commercial Bank India", "ica": "3305", "cid": "Indus Financial Group", "bin": "524418", "country": "India", "channel": "POS", "status": "Decision Recorded", "severity": "Medium", "source": "xMatters", "signal": "Declines ×1.8", "inputCheck": "OK", "assistantView": "BIN-attack pattern (single POS terminal)", "createdAt": "2026-10-28T11:42:00Z" },
+  { "id": "TRT-2026-7833", "pattern": "BIN Attack", "issuer": "Southern Cross Mexico", "ica": "5151", "cid": "Southern Cross Group", "bin": "538802", "country": "Mexico", "channel": "CNP", "status": "Open", "severity": "Low", "source": "xMatters", "signal": "Declines ×1.1", "inputCheck": "OK", "assistantView": "Card-validation burst (multi-BIN)", "createdAt": "2026-10-29T06:06:00Z" },
+  { "id": "TRT-2026-7834", "pattern": "BIN Attack", "issuer": "Pacifica Cards Australia", "ica": "4121", "cid": "Pacifica Group", "bin": "526640", "country": "Australia", "channel": "CNP", "status": "Review Required", "severity": "High", "source": "xMatters", "signal": "Declines ×6.5", "inputCheck": "1 warning", "assistantView": "Inconclusive · seek validation", "createdAt": "2026-10-29T07:57:00Z" },
+  { "id": "TRT-2026-7835", "pattern": "BIN Attack", "issuer": "Meridian Banque France", "ica": "2211", "cid": "Meridian Group", "bin": "513390", "country": "France", "channel": "CNP", "status": "Investigating", "severity": "High", "source": "OCC ticket", "signal": "Declines ×11.6", "inputCheck": "1 warning", "assistantView": "BIN-attack pattern reported by issuer (OCC)", "createdAt": "2026-10-29T12:05:00Z" },
+  { "id": "TRT-2026-7836", "pattern": "BIN Attack", "issuer": "Northbridge Bank USA", "ica": "1041", "cid": "Northbridge Financial Group", "bin": "549301", "country": "USA", "channel": "POS", "status": "Open", "severity": "Medium", "source": "xMatters", "signal": "Declines ×2.7", "inputCheck": "OK", "assistantView": "BIN-attack pattern (low-and-slow testing)", "createdAt": "2026-10-28T22:14:00Z" }
 ]

@@ -1095,3 +1095,227 @@
 .brd-app .brd-copilot-prompts button.brd-copilot-prompt-primary { min-height: 44px; border-color: #cbd6f0; background: #edf1fc; color: var(--brd-primary); font-weight: 600; }
 .brd-app .brd-copilot-prompts button.brd-copilot-prompt-primary > span svg { flex: 0 0 auto; color: var(--brd-primary); }
 .brd-app .brd-copilot-prompts button.brd-copilot-prompt-primary:hover { border-color: var(--brd-primary); background: #e5ebfb; }
+/* ---------- BRD v7 gap additions: helpers for the added sections, reusing existing tokens ---------- */
+.brd-app .brd-option-group { display: grid; gap: 8px; padding: 4px 0 6px; }
+.brd-app .brd-option-group-label { padding: 0 18px; color: var(--brd-ink); font-size: 13px; font-weight: 600; }
+.brd-app .brd-option-group .brd-decision-actions { padding: 0 18px 6px; }
+.brd-app .brd-option-tag { margin-left: 6px; color: var(--brd-muted); font-size: 12px; font-style: normal; font-weight: 500; }
+.brd-app .brd-option-detail { margin: 0 18px 8px; }
+.brd-app .brd-field-hint { color: var(--brd-muted); font-size: 12px; font-weight: 400; }
+.brd-app .brd-form-success { border-color: #b9dcc7; background: #edf5ef; color: var(--brd-success); }
+.brd-app .brd-form-actions-row { flex-wrap: wrap; gap: 8px; }
+.brd-app .brd-heading-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.brd-app .brd-table-note { margin: 0; padding: 10px 18px 14px; color: var(--brd-muted); font-size: 12px; line-height: 1.5; }
+.brd-app .brd-section-bottom { margin-bottom: 14px; }
+.brd-app .brd-section-top { margin-top: 14px; margin-bottom: 14px; }
+.brd-app .brd-uncertainty.brd-section-bottom { margin: 0 18px 14px; padding-top: 0; border-top: 0; }
+.brd-app .brd-uncertainty.brd-section-bottom p, .brd-app .brd-option-detail p { display: flex; align-items: flex-start; gap: 6px; font-size: 13px; line-height: 1.5; }
+.brd-app .brd-check-list { display: grid; gap: 8px; padding: 0 18px 16px; }
+.brd-app .brd-check { display: flex; align-items: flex-start; gap: 8px; margin: 0; color: var(--brd-ink); font-size: 13px; line-height: 1.45; }
+.brd-app .brd-check svg { flex: 0 0 auto; margin-top: 2px; }
+.brd-app .brd-check b { font-weight: 600; }
+.brd-app .brd-check-pass svg { color: var(--brd-success); }
+.brd-app .brd-check-warn svg { color: var(--brd-warning); }
+.brd-app .brd-status-mapped { border-color: #c6e1cf; background: #edf5ef; color: var(--brd-success); }
+.brd-app .brd-correction { display: block; margin-top: 4px; color: var(--brd-warning); font-size: 12px; }
+.brd-app .brd-correction-bar { display: grid; gap: 6px; padding: 10px 14px 14px; border-top: 1px solid var(--brd-line); }
+.brd-app .brd-correction-bar .brd-filter-bar { padding: 0; }
+.brd-app .brd-inline-button { justify-self: start; margin-top: 8px; }
+.brd-app .brd-evidence-metric small { color: var(--brd-muted); font-size: 12px; }
+.brd-app .brd-chart-legend { flex-direction: row; flex-wrap: wrap; gap: 14px; padding: 6px 16px 0; }
+.brd-app .brd-key-moments { display: flex; flex-wrap: wrap; gap: 6px 18px; padding: 8px 16px 14px; color: var(--brd-muted); font-size: 12px; }
+.brd-app .brd-key-moments b { color: var(--brd-ink); font-weight: 600; }
+.brd-app .brd-sidebar-advisory { margin-top: 14px; }
+.brd-app .brd-sidebar-advisory p { margin: 0; padding: 10px; border: 1px solid var(--brd-line); border-radius: 5px; background: #fff; color: var(--brd-muted); font-size: 12px; line-height: 1.45; }
+.brd-app .brd-topbar-search { flex: 0 1 280px; min-width: 0; }
+.brd-app .brd-topbar-search .brd-search { min-width: 0; }
+@media (max-width: 850px) { .brd-app .brd-sidebar-advisory { display: none; } }
+@media (max-width: 620px) { .brd-app .brd-topbar-search { display: none; } }
+
+/* ============================================================
+   Design polish layer — visual refinement only (structure unchanged).
+   Appended last so it wins the cascade, matching the file's layering.
+   ============================================================ */
+.brd-app {
+  --brd-primary-dark: #213f8a;
+  --brd-primary-soft: #edf1fc;
+  --brd-shadow-sm: 0 1px 2px #1419230d, 0 1px 3px #1419230f;
+  --brd-shadow-md: 0 4px 14px #14192316;
+  --brd-radius: 8px;
+}
+.brd-app ::selection { background: #cfe0ff; color: var(--brd-ink); }
+
+/* Topbar: hairline + faint shadow for separation from the canvas */
+.brd-app .brd-topbar { border-bottom: 1px solid var(--brd-line); box-shadow: 0 1px 3px #1419230a; }
+
+/* Surfaces: soft, consistent elevation and radius */
+.brd-app .brd-surface, .brd-app .brd-trt-header, .brd-app .brd-summary-card,
+.brd-app .brd-recommendation-card, .brd-app .brd-best-match {
+  border-radius: var(--brd-radius); box-shadow: var(--brd-shadow-sm);
+}
+
+/* Section headings: a touch more breathing room, crisper hierarchy */
+.brd-app .brd-section-heading h2 { font-weight: 600; letter-spacing: -.005em; }
+.brd-app .brd-eyebrow { text-transform: uppercase; font-weight: 700; letter-spacing: .08em; }
+
+/* Clickable table rows: clear affordance + accent on hover/focus */
+.brd-app .brd-table tbody tr[tabindex] { cursor: pointer; }
+.brd-app .brd-table tbody tr[tabindex]:hover { background: var(--brd-primary-soft); box-shadow: inset 3px 0 var(--brd-primary); }
+.brd-app .brd-table td { vertical-align: middle; }
+
+/* Buttons: smooth states, gentle press, primary depth */
+.brd-app .brd-button { border-radius: 6px; font-weight: 600; transition: background-color 140ms ease, border-color 140ms ease, box-shadow 140ms ease, transform 80ms ease; }
+.brd-app .brd-button:active { transform: translateY(1px); }
+.brd-app .brd-button-primary { box-shadow: 0 1px 2px #2b4fa833; }
+.brd-app .brd-button-primary:hover { background: var(--brd-primary-dark); box-shadow: 0 3px 10px #2b4fa840; }
+.brd-app .brd-button-outline:hover { border-color: #aab8db; background: var(--brd-primary-soft); color: var(--brd-primary); }
+
+/* Text buttons / inline links: primary colour, underline on hover */
+.brd-app .brd-text-button { color: var(--brd-primary); font-weight: 600; transition: color 120ms ease; }
+.brd-app .brd-text-button:hover { color: var(--brd-primary-dark); text-decoration: underline; text-underline-offset: 2px; }
+
+/* Metric tiles: tracked labels, tabular figures, hover lift */
+.brd-app .brd-metric { border-radius: var(--brd-radius); box-shadow: var(--brd-shadow-sm); transition: box-shadow 140ms ease, transform 120ms ease; }
+.brd-app .brd-metric:hover { box-shadow: var(--brd-shadow-md); transform: translateY(-1px); }
+.brd-app .brd-metric span { letter-spacing: .06em; text-transform: uppercase; font-weight: 600; color: var(--brd-muted); }
+.brd-app .brd-metric strong { font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+
+/* Status + severity: unified pill shape and weight */
+.brd-app .brd-status { border-radius: 999px; padding: 0 10px; font-weight: 600; letter-spacing: .01em; }
+.brd-app .brd-status-low { border-color: #d7dde6; background: #f1f4f8; color: var(--brd-neutral); }
+.brd-app .brd-severity-critical { color: var(--brd-critical); font-weight: 600; }
+.brd-app .brd-severity-low { color: var(--brd-neutral); font-weight: 600; }
+
+/* Filters & search: hover border + focus ring */
+.brd-app .brd-filter:hover, .brd-app .brd-search:hover { border-color: #b7c0d0; }
+.brd-app .brd-search:focus-within, .brd-app .brd-filter:focus-within { border-color: var(--brd-primary); box-shadow: 0 0 0 3px #2b4fa81f; }
+
+/* Sidebar nav + tabs: smooth, rounded */
+.brd-app .brd-sidebar-section > a, .brd-app .brd-sidebar-section > button { border-radius: 6px; transition: background-color 120ms ease, color 120ms ease; }
+.brd-app .brd-tabs button { transition: color 120ms ease, border-color 120ms ease; }
+
+/* Decision option cards + toggle rows: smooth, rounded */
+.brd-app .brd-decision-option { border-radius: 6px; transition: border-color 120ms ease, background-color 120ms ease, box-shadow 120ms ease; }
+.brd-app .brd-decision-option.brd-decision-selected { box-shadow: inset 3px 0 var(--brd-success); }
+.brd-app .brd-decision-actions button { border-radius: 6px; font-weight: 600; transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease; }
+
+/* Signal / evidence / event cards: hover elevation */
+.brd-app .brd-signal-card, .brd-app .brd-events-grid article, .brd-app .brd-evidence-chain article { transition: box-shadow 140ms ease, border-color 140ms ease; }
+.brd-app .brd-signal-card:hover, .brd-app .brd-events-grid article:hover { box-shadow: var(--brd-shadow-sm); }
+
+/* Consistent focus ring for interactive elements */
+.brd-app a:focus-visible, .brd-app button:focus-visible,
+.brd-app select:focus-visible, .brd-app input:focus-visible, .brd-app textarea:focus-visible {
+  outline: 2px solid var(--brd-primary); outline-offset: 2px;
+}
+
+/* Live indicator dot: subtle pulse */
+.brd-app .brd-live-indicator i { box-shadow: 0 0 0 0 #1c6b4566; animation: brd-pulse 2s ease-out infinite; }
+@keyframes brd-pulse { 0% { box-shadow: 0 0 0 0 #1c6b4559; } 70% { box-shadow: 0 0 0 6px #1c6b4500; } 100% { box-shadow: 0 0 0 0 #1c6b4500; } }
+@media (prefers-reduced-motion: reduce) { .brd-app .brd-live-indicator i { animation: none; } }
+
+/* ============================================================
+   Workspace tabs — segmented control (Overview / Evidence / …)
+   Overrides the earlier underline style; appended last to win.
+   ============================================================ */
+.brd-app .brd-tabs {
+  display: flex; width: max-content; max-width: 100%; gap: 4px;
+  margin: 2px 0 18px; padding: 4px;
+  border: 1px solid var(--brd-line); border-radius: 11px;
+  background: #eef1f6; box-shadow: inset 0 1px 2px #14192308;
+  overflow-x: auto; scrollbar-width: none;
+}
+.brd-app .brd-tabs::-webkit-scrollbar { display: none; }
+.brd-app .brd-tabs button {
+  display: inline-flex; min-height: 38px; flex: 0 0 auto;
+  align-items: center; justify-content: center;
+  padding: 0 18px; border: 0; border-radius: 7px;
+  background: transparent; color: var(--brd-muted); cursor: pointer;
+  font-size: 13px; font-weight: 600; white-space: nowrap; letter-spacing: -.005em;
+  transition: background-color 150ms ease, color 150ms ease, box-shadow 150ms ease;
+}
+.brd-app .brd-tabs button:hover { color: var(--brd-ink); }
+.brd-app .brd-tabs button:active { transform: none; }
+.brd-app .brd-tabs .brd-tab-active,
+.brd-app .brd-tabs .brd-tab-active:hover {
+  background: #fff; color: var(--brd-primary);
+  box-shadow: 0 1px 2px #14192318, 0 1px 1px #1419230f;
+}
+.brd-app .brd-tabs button:focus-visible { outline-offset: -2px; }
+
+/* ============================================================
+   Premium layer — elevates the whole UI (visual only; appended last).
+   ============================================================ */
+.brd-app {
+  --brd-shadow-sm: 0 1px 2px #141d2b0f, 0 2px 6px #141d2b0a;
+  --brd-shadow-md: 0 6px 18px #141d2b14, 0 2px 6px #141d2b0d;
+  --brd-shadow-lg: 0 18px 44px #141d2b1f, 0 6px 14px #141d2b12;
+  --brd-radius: 10px;
+}
+
+/* Canvas: a whisper of cool depth behind the content */
+.brd-app { background: linear-gradient(180deg, #f6f8fb 0%, var(--brd-canvas) 320px) fixed; }
+
+/* Frosted, sticky top bar */
+.brd-app .brd-topbar { background: #fff; border-bottom: 1px solid var(--brd-line); box-shadow: 0 1px 3px #141d2b0d; }
+@supports (backdrop-filter: blur(1px)) {
+  .brd-app .brd-topbar { background: #ffffffcc; backdrop-filter: saturate(180%) blur(14px); -webkit-backdrop-filter: saturate(180%) blur(14px); }
+}
+
+/* Brand mark: gradient tile with soft depth */
+.brd-app .brd-topbar-brand > span:first-child {
+  background: linear-gradient(135deg, #3a5fc4, #223f8a);
+  border-radius: 9px; box-shadow: 0 2px 6px #2b4fa840, inset 0 1px 0 #ffffff33;
+}
+.brd-app .brd-topbar-brand strong { letter-spacing: -.01em; font-weight: 650; }
+
+/* Page headings: tighter, more confident */
+.brd-app .brd-page-heading h1 { font-weight: 650; letter-spacing: -.02em; }
+.brd-app .brd-page-heading h2 { font-weight: 650; letter-spacing: -.015em; }
+
+/* Surfaces & headers: layered elevation, larger radius */
+.brd-app .brd-surface, .brd-app .brd-trt-header, .brd-app .brd-summary-card,
+.brd-app .brd-recommendation-card, .brd-app .brd-best-match, .brd-app .brd-udt-card {
+  border-radius: var(--brd-radius); box-shadow: var(--brd-shadow-sm);
+}
+
+/* Metric tiles: premium gradient face, tracked label, big tabular figure */
+.brd-app .brd-metric {
+  border-radius: var(--brd-radius);
+  background: linear-gradient(180deg, #ffffff, #fbfcfe);
+  box-shadow: var(--brd-shadow-sm); transition: box-shadow 160ms ease, transform 140ms ease;
+}
+.brd-app .brd-metric:hover { box-shadow: var(--brd-shadow-md); transform: translateY(-2px); }
+.brd-app .brd-metric span { letter-spacing: .07em; text-transform: uppercase; font-weight: 600; color: var(--brd-muted); }
+.brd-app .brd-metric strong { font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
+
+/* Primary button: subtle gradient + depth, crisp hover/active */
+.brd-app .brd-button-primary {
+  background: linear-gradient(180deg, #3358b4, #2b4fa8); border-color: #244aa0;
+  box-shadow: 0 1px 2px #2b4fa84d, inset 0 1px 0 #ffffff26;
+}
+.brd-app .brd-button-primary:hover { background: linear-gradient(180deg, #2d50aa, #243f8a); box-shadow: 0 4px 12px #2b4fa84d; }
+.brd-app .brd-button-primary:active { box-shadow: 0 1px 2px #2b4fa84d; }
+
+/* Sidebar active: soft tint + left accent bar */
+.brd-app .brd-sidebar-section > .brd-nav-active {
+  background: linear-gradient(90deg, #e9eefc, #eef2fd); color: var(--brd-primary);
+  font-weight: 650; box-shadow: inset 2px 0 var(--brd-primary);
+}
+
+/* Tables: clip rounded corners, premium header, refined hover */
+.brd-app .brd-table-scroll { border-radius: calc(var(--brd-radius) - 2px); }
+.brd-app .brd-table th { letter-spacing: .04em; text-transform: uppercase; font-size: 11px; color: var(--brd-neutral); background: #f5f7fb; }
+.brd-app .brd-table tbody tr[tabindex]:hover { background: var(--brd-primary-soft); box-shadow: inset 3px 0 var(--brd-primary); }
+
+/* Status & severity: premium pills */
+.brd-app .brd-status { border-radius: 999px; font-weight: 600; box-shadow: inset 0 0 0 1px #ffffff40; }
+
+/* Donut centre figure: confident */
+.brd-app .brd-donut-label strong { font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
+
+/* Thin, refined scrollbars everywhere */
+.brd-app * { scrollbar-width: thin; scrollbar-color: #c3ccda transparent; }
+.brd-app *::-webkit-scrollbar { width: 9px; height: 9px; }
+.brd-app *::-webkit-scrollbar-thumb { border: 2px solid transparent; border-radius: 999px; background: #c3ccda; background-clip: content-box; }
+.brd-app *::-webkit-scrollbar-thumb:hover { background: #a9b4c6; background-clip: content-box; }
